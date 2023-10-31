@@ -1,0 +1,56 @@
+name: logastics
+description: A new Flutter project.
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  page_transition: "^2.0.9"
+  font_awesome_flutter: ">=6.2.1"
+  get: ^4.6.5
+  cupertino_icons: ^1.0.2
+  flutter_dialogs: ^3.0.0
+  google_maps_flutter: ^2.2.3
+  rive: ^0.9.1
+  flutter_svg: ^1.1.6
+  provider: ^6.0.5
+  geolocator: ^10.1.0
+  lottie: ^1.4.2
+  geocoding: ^2.0.5
+  simple_animations: ^5.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  flutter_easyloading: ^3.0.5
+  sp_util: ^2.0.3
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/img/
+    - assets/rive/
+    - assets/js/
+    - assets/svg/
+  
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/font/Poppins-Regular.ttf
+    - family: Poppins-semibold
+      fonts:
+        - asset: assets/font/Poppins-Bold.ttf
+    - family: Poppins-bold
+      fonts:
+        - asset: assets/font/Poppins-SemiBold.ttf
+    - family: Poppins-ExtraBold
+      fonts:
+        - asset: assets/font/Poppins-ExtraBold.ttf
