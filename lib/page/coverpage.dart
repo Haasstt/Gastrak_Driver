@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logastics/controller/logincontroller.dart';
+import 'package:logastics/controller/Authcontroller.dart';
 
 class Coverpage extends StatefulWidget {
   const Coverpage({super.key});
@@ -184,14 +184,6 @@ class _MyHomePageState extends State<Coverpage> {
               backgroundColor: Colors.transparent,
               body: Stack(
                 children: [
-                  InkWell(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

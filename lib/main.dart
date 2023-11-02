@@ -1,11 +1,11 @@
+// ignore_for_file: depend_on_referenced_packages, implementation_imports
+
 import 'package:flutter/material.dart';
 import 'package:logastics/page/updatelokasi.dart';
 import 'package:page_transition/page_transition.dart';
 import 'dart:async';
-// ignore: depend_on_referenced_packages, implementation_imports
 import 'package:flutter_easyloading/src/easy_loading.dart';
 import 'package:get/get.dart';
-// ignore: depend_on_referenced_packages
 import 'package:sp_util/sp_util.dart';
 
 //page

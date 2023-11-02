@@ -1,10 +1,66 @@
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:sp_util/sp_util.dart';
 import 'package:flutter/services.dart';
 import 'package:logastics/animation/BounceAnimation.dart';
+import 'package:logastics/provider/UserProvider.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:sp_util/sp_util.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:another_flushbar/flushbar.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<Homepage> {
+  List<Map<String, dynamic>> Datauser = [];
+  late var message = "";
+  bool gagalmemuat = false;
+
+  void GetData() {
+    setState(() {
+      gagalmemuat = false;
+    });
+    UserProvider().getDatauser(SpUtil.getInt('id')).then((value) {
+      if (value.statusCode == 200) {
+        var data = value.body['datauser'];
+        setState(() {
+          Datauser.add(data);
+        });
+        EasyLoading.dismiss();
+      } else if (value.hasError == true) {
+        var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
+        setState(() {
+          message = pesan;
+          gagalmemuat = !gagalmemuat;
+        });
+        Flushbar(
+          backgroundColor: Colors.red,
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.all(10),
+          borderRadius: BorderRadius.circular(8),
+          message: message,
+          icon: const Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: const Duration(seconds: 3),
+        ).show(context);
+        EasyLoading.dismiss();
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    GetData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +84,7 @@ class Homepage extends StatelessWidget {
                 colors: [
                   Color.fromRGBO(128, 38, 198, 1.0),
                   Color.fromRGBO(249, 1, 131, 1.0),
-                ], // Warna gradient
+                ],
               ),
             ),
             child: Column(
@@ -128,33 +184,131 @@ class Homepage extends StatelessWidget {
                               ],
                             ),
                             height: 80,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '${SpUtil.getString("name")}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'Poppins-bold',
-                                      color: Colors.black,
+                            child: Datauser.isEmpty
+                                ? gagalmemuat
+                                    ? Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 20),
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color.fromARGB(
+                                                      255, 189, 189, 189)
+                                                  .withOpacity(
+                                                      0.25), // Warna bayangan
+                                              spreadRadius: 1,
+                                              blurRadius: 1,
+                                              offset: const Offset(0, 0),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Gagal Memuat',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 12,
+                                                color: Colors.black45,
+                                              ),
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  GetData();
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: const Color.fromARGB(
+                                                        255, 255, 255, 255),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                50)),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color
+                                                                .fromARGB(255,
+                                                                189, 189, 189)
+                                                            .withOpacity(
+                                                                0.15), // Warna bayangan
+                                                        spreadRadius: 1,
+                                                        blurRadius: 4,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 5),
+                                                  child: const Icon(
+                                                    Icons.refresh_rounded,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Shimmer.fromColors(
+                                        baseColor: const Color.fromARGB(
+                                            255, 241, 241, 241),
+                                        highlightColor: const Color.fromARGB(
+                                            255, 252, 252, 252),
+                                        child: Container(
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      )
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${(Datauser[0]['name'])}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontFamily: 'Poppins-bold',
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${(Datauser[0]['role'])}',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontFamily: 'Poppins',
+                                                color: Colors.black45,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const Text(
-                                    "ID37823638",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black45,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           ),
                         ),
                       ),
