@@ -216,11 +216,9 @@ class _MyHomePageState extends State<Settingpage> {
                                                               Colors.black26),
                                                     ),
                                                   ),
-                                            FaIcon(
-                                              FontAwesomeIcons.chevronRight,
-                                              size: 20,
-                                              color: Colors.black,
-                                            ),
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),
                                           ],
                                         ),
                                       ],
@@ -291,12 +289,9 @@ class _MyHomePageState extends State<Settingpage> {
                                                               Colors.black26),
                                                     ),
                                                   ),
-                                            FaIcon(
-                                              FontAwesomeIcons.chevronRight,
-                                              size: 20,
-                                              color: Colors.black,
-                                            ),
-                                          ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                          ],
                                         ),
                                       ],
                                     ),
@@ -387,12 +382,9 @@ class _MyHomePageState extends State<Settingpage> {
                                                                   .black26),
                                                         ),
                                                       ),
-                                            FaIcon(
-                                              FontAwesomeIcons.chevronRight,
-                                              size: 20,
-                                              color: Colors.black,
-                                            ),
-                                          ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                          ],
                                         ),
                                       ],
                                     ),
@@ -443,12 +435,9 @@ class _MyHomePageState extends State<Settingpage> {
                                             ),
                                           ],
                                         ),
-                                        FaIcon(
-                                          FontAwesomeIcons.chevronRight,
-                                          size: 20,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                      ],
                                     ),
                                   ),
                                 ),
@@ -520,12 +509,9 @@ class _MyHomePageState extends State<Settingpage> {
                                             ),
                                           ],
                                         ),
-                                        FaIcon(
-                                          FontAwesomeIcons.chevronRight,
-                                          size: 20,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                      ],
                                     ),
                                   ),
                                 ),
@@ -574,12 +560,9 @@ class _MyHomePageState extends State<Settingpage> {
                                             ),
                                           ],
                                         ),
-                                        FaIcon(
-                                          FontAwesomeIcons.chevronRight,
-                                          size: 20,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                      ],
                                     ),
                                   ),
                                 ),
@@ -628,12 +611,9 @@ class _MyHomePageState extends State<Settingpage> {
                                             ),
                                           ],
                                         ),
-                                        FaIcon(
-                                          FontAwesomeIcons.chevronRight,
-                                          size: 20,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                      ],
                                     ),
                                   ),
                                 ),
@@ -682,12 +662,9 @@ class _MyHomePageState extends State<Settingpage> {
                                             ),
                                           ],
                                         ),
-                                        FaIcon(
-                                          FontAwesomeIcons.chevronRight,
-                                          size: 20,
-                                          color: Colors.black,
-                                        ),
-                                      ],
+                                             Image.asset(
+                                                "assets/img/Group_310.png",
+                                              ),                                      ],
                                     ),
                                   ),
                                 ),
@@ -704,9 +681,8 @@ class _MyHomePageState extends State<Settingpage> {
                             width: 350,
                             height: 50,
                             decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Colors.black)),
+                                color: const Color.fromRGBO(249, 1, 131, 1.0),
+                                borderRadius: BorderRadius.circular(50),),
                             child: TextButton(
                               style: TextButton.styleFrom(
                                 shape: const RoundedRectangleBorder(),
@@ -722,7 +698,7 @@ class _MyHomePageState extends State<Settingpage> {
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 15,
-                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      color: Color.fromARGB(255, 255, 255, 255),
                                     ),
                                   ),
                                   SizedBox(
@@ -731,7 +707,7 @@ class _MyHomePageState extends State<Settingpage> {
                                   Icon(
                                     Icons.logout_outlined,
                                     size: 15,
-                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    color: Color.fromARGB(255, 255, 255, 255),
                                   )
                                 ],
                               ),

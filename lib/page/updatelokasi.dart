@@ -44,7 +44,7 @@ class _HomePageState extends State<UpdateLokasi> {
   }
 
   Widget _buildBody() {
-    return Stack(children: [_getMap(), _showDraggedAddress()]);
+    return Stack(children: [_showDraggedAddress()]);
   }
 
   Widget _showDraggedAddress() {

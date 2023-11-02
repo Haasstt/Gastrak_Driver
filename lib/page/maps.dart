@@ -52,7 +52,7 @@ class _HomePageState extends State<Maps> {
   }
 
   Widget _buildBody() {
-    return Stack(children: [_getMap(), _getCustomPin(), _showDraggedAddress()]);
+    return Stack(children: [ _getCustomPin(), _showDraggedAddress()]);
   }
 
   Widget _showDraggedAddress() {

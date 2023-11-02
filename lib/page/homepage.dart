@@ -136,7 +136,7 @@ class _MyHomePageState extends State<Homepage> {
                                       ),
                                     ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -186,79 +186,19 @@ class _MyHomePageState extends State<Homepage> {
                             height: 80,
                             child: Datauser.isEmpty
                                 ? gagalmemuat
-                                    ? Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 20),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 255, 255, 255),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color.fromARGB(
-                                                      255, 189, 189, 189)
-                                                  .withOpacity(
-                                                      0.25), // Warna bayangan
-                                              spreadRadius: 1,
-                                              blurRadius: 1,
-                                              offset: const Offset(0, 0),
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            'Gagal Memuat',
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 12,
+                                              color: Colors.black45,
                                             ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text(
-                                              'Gagal Memuat',
-                                              style: TextStyle(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 12,
-                                                color: Colors.black45,
-                                              ),
-                                            ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  GetData();
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: const Color.fromARGB(
-                                                        255, 255, 255, 255),
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                50)),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: const Color
-                                                                .fromARGB(255,
-                                                                189, 189, 189)
-                                                            .withOpacity(
-                                                                0.15), // Warna bayangan
-                                                        spreadRadius: 1,
-                                                        blurRadius: 4,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 5,
-                                                      horizontal: 5),
-                                                  child: const Icon(
-                                                    Icons.refresh_rounded,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       )
                                     : Shimmer.fromColors(
                                         baseColor: const Color.fromARGB(
@@ -298,7 +238,7 @@ class _MyHomePageState extends State<Homepage> {
                                             ),
                                             Text(
                                               '${(Datauser[0]['role'])}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                                 fontFamily: 'Poppins',
                                                 color: Colors.black45,
@@ -604,6 +544,57 @@ class _MyHomePageState extends State<Homepage> {
               ],
             ),
           ),
+          gagalmemuat
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: InkWell(
+                        onTap: () {
+                          GetData();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(32, 0, 0, 0),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(50)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(255, 189, 189, 189)
+                                    .withOpacity(0.15), // Warna bayangan
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 15),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Ketuk untuk memuat ulang',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: const Icon(
+                                  Icons.refresh_rounded,
+                                  size: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Text(''),
         ],
       ),
     );
