@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logastics/animation/BounceAnimation.dart';
 import 'package:logastics/animation/animations.dart';
+import 'package:logastics/page/detail_pesanan.dart';
 import 'package:logastics/provider/TransaksiProvider.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:page_transition/page_transition.dart';
 
 class OrderlistPage extends StatefulWidget {
   const OrderlistPage({super.key});
@@ -32,9 +34,7 @@ class _MyHomePageState extends State<OrderlistPage> {
             Agents.add(element);
           });
         }
-        // setState(() {
-        //   Agents.add(data);
-        // });
+        print(data);
       } else if (value.hasError == true) {
         var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
         setState(() {
@@ -210,9 +210,22 @@ class _MyHomePageState extends State<OrderlistPage> {
                                                       ),
                                                       InkWell(
                                                         onTap: () {
-                                                          print(Agents[index][
-                                                                  'jumlah_pesanan']
-                                                              .toString());
+                                                          Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              child:
+                                                                  DetailPesanan(
+                                                                id: Agents[
+                                                                        index]
+                                                                    ['id_agen'],
+                                                                agen: Agents[
+                                                                        index]
+                                                                    ['name'],
+                                                              ),
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                            ),
+                                                          );
                                                         },
                                                         child: const Text(
                                                           'Detail Pesanan',

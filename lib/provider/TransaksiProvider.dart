@@ -7,4 +7,7 @@ class TransaksiProvider extends BaseProvider {
   Future<Response> getDatapesanan(id) async {
     return get('$Url/pesanan/$id', headers: header);
   }
+  Future<Response> getDataDetailpesanan(id) async {
+    return get('$Url/pesanan/agen/$id', headers: header);
+  }
 }

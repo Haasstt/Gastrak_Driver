@@ -30,7 +30,7 @@ void main() async {
       '/cover': (BuildContext context) => const Coverpage(),
       '/registrasi': (BuildContext context) => const Registerpage(),
       '/home': (BuildContext context) => const Homepage(),
-      '/orderlist': (BuildContext context) => OrderlistPage(),
+      '/orderlist': (BuildContext context) => const OrderlistPage(),
       '/orderlistmap': (BuildContext context) => const OrderlistmapPage(),
       '/settings': (BuildContext context) => const Settingpage(),
       '/maps': (BuildContext context) => const Maps(),
@@ -99,7 +99,7 @@ class _MyApp extends State<MyApp> {
 final ThemeData customTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: Color.fromRGBO(249, 1, 131, 1.0),
+      primary: const Color.fromRGBO(249, 1, 131, 1.0),
     ),
   ),
 );
