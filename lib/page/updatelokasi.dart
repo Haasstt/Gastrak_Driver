@@ -1,12 +1,11 @@
-import 'dart:async';
+// ignore_for_file: unnecessary_import, non_constant_identifier_names, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:logastics/controller/lokasicontroller.dart';
-import 'package:lottie/lottie.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:logastics/animation/BounceAnimation.dart';
 
 class UpdateLokasi extends StatefulWidget {
   const UpdateLokasi({Key? key}) : super(key: key);
@@ -16,304 +15,315 @@ class UpdateLokasi extends StatefulWidget {
 }
 
 class _HomePageState extends State<UpdateLokasi> {
-  final LokasiController _lokasiController = LokasiController();
-  //get map controller to access map
-  final Completer<GoogleMapController> _googleMapController = Completer();
-  CameraPosition? _cameraPosition;
-  late LatLng _defaultLatLng;
-  late String stringLatLng;
+  String koordinat = "";
+  String alamat = "";
+  bool loading = false;
 
   @override
   void initState() {
-    _init();
     super.initState();
-  }
-
-  _init() {
-    _defaultLatLng = const LatLng(-7, 130);
-    _cameraPosition = CameraPosition(target: _defaultLatLng, zoom: 15);
-
-    _gotoUserCurrentPosition();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(),
-    );
-  }
-
-  Widget _buildBody() {
-    return Stack(children: [_getMap(), _showDraggedAddress()]);
-  }
-
-  Widget _showDraggedAddress() {
-    return SafeArea(
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color:
-                    const Color.fromARGB(71, 109, 109, 109).withOpacity(0.15),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
+      appBar: AppBar(
+        title: const Text(
+          'Update Lokasi',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color.fromRGBO(249, 1, 131, 1.0),
+                Color.fromRGBO(128, 38, 198, 1.0)
+              ], // Warna gradient
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: FloatingActionButton(
-                      backgroundColor: const Color.fromRGBO(249, 1, 131, 1.0),
-                      onPressed: () {
-                        _gotoUserCurrentPosition();
-                      },
-                      child: const Icon(Icons.gps_fixed),
-                    ),
+        ),
+        elevation: 0,
+      ),
+      body: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(255, 255, 255, 1),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.25), // Warna bayangan
+                    spreadRadius: 0, // Seberapa jauh bayangan menyebar
+                    blurRadius: 4, // Seberapa kabur bayangan
+                    offset: const Offset(0, 1), // Posisi bayangan (x, y)
                   ),
                 ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                    color: Color.fromRGBO(249, 1, 131, 1.0),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    )),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: loading
+                        ? const CircularProgressIndicator(
+                            color: Color.fromRGBO(249, 1, 131, 1.0),
+                          )
+                        : ElevatedButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(249, 1, 131, 1.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () async {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              setState(() {
+                                loading = true;
+                              });
+
+                              Position position =
+                                  await _GetUserCurrentPosition();
+                              setState(() {
+                                koordinat =
+                                    '${position.latitude}, ${position.longitude}';
+                              });
+
+                              _getAddress(position);
+
+                              setState(() {
+                                loading = false;
+                              });
+                            },
+                            child: const Text(
+                              "Dapatkan Lokasi",
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          ),
+                  ),
+                  loading
+                      ? const Text('')
+                      : Row(
+                          children: [
+                            Container(
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: koordinat == "" && alamat == ""
+                                        ? const Color.fromARGB(255, 255, 0, 0)
+                                        : const Color.fromARGB(255, 9, 255, 0),
+                                  )),
+                              child: Center(
+                                child: koordinat == "" && alamat == ""
+                                    ? const FaIcon(
+                                        FontAwesomeIcons.exclamation,
+                                        size: 10,
+                                        color: Color.fromARGB(255, 255, 0, 0),
+                                      )
+                                    : const FaIcon(
+                                        FontAwesomeIcons.check,
+                                        size: 10,
+                                        color: Color.fromARGB(255, 9, 255, 0),
+                                      ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: koordinat == "" && alamat == ""
+                                    ? const Text(
+                                        "Klik tombol untuk mendapatkan lokasi terbaru Anda",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 10,
+                                          color: Color.fromARGB(255, 255, 0, 0),
+                                        ),
+                                      )
+                                    : const Text(
+                                        "Lokasi berhasil didapat",
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 10,
+                                          color: Color.fromARGB(255, 9, 255, 0),
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            // Salin alamat ketika teks diketuk
-                            Clipboard.setData(ClipboardData(
-                                text: _lokasiController.draggedAddress));
-                            // Tampilkan pesan atau umpan balik lainnya
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Alamat disalin ke clipboard'),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.symmetric(
-                                vertical: 10),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                _lokasiController.draggedAddress,
-                                style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
+                        const Text(
+                          'Titik Koordinat',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            // Salin alamat ketika teks diketuk
-                            Clipboard.setData(
-                                ClipboardData(text: _lokasiController.latlong));
-                            // Tampilkan pesan atau umpan balik lainnya
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Koordinat disalin ke clipboard'),
-                              ),
-                            );
-                          },
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Text(
-                              _lokasiController.latlong,
-                              style: const TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
+                        Text(
+                          (koordinat),
+                          style: const TextStyle(
+                            height: 2,
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
-                        Form(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: TextFormField(
-                                  controller: _lokasiController.txtKeterangan,
-                                  style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    labelText: "Tambahkan Keterangan",
-                                    labelStyle: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                    ),
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        const Text(
+                          'Alamat',
+                          style: TextStyle(
+                            height: 2,
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Container(
-                            width: double.infinity,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color.fromARGB(255, 122, 122, 122)
-                                          .withOpacity(0.55), // Warna bayangan
-                                  spreadRadius:
-                                      0, // Seberapa jauh bayangan menyebar
-                                  blurRadius: 5, // Seberapa kabur bayangan
-                                  offset: const Offset(
-                                      0, 4), // Posisi bayangan (x, y)
-                                ),
-                              ],
-                            ),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                shape: const RoundedRectangleBorder(),
-                              ),
-                              onPressed: () {
-                                _lokasiController.Addlocation();
-                              },
-                              child: const Text(
-                                "Update",
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 15,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                ),
-                              ),
-                            ),
+                        Text(
+                          (alamat),
+                          style: const TextStyle(
+                            height: 2,
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tentukan Tujuan Anda',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Keterangan',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: BounceAnimation(
+                      0.5,
+                      Container(
+                        width: 350,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(249, 1, 131, 1.0),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: const RoundedRectangleBorder(),
+                          ),
+                          onPressed: () {},
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.edit_location_alt_outlined,
+                                size: 15,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                "Update Lokasi Anda",
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 20,
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color.fromRGBO(249, 1, 131, 1.0),
+                    Color.fromRGBO(128, 38, 198, 1.0)
+                  ], // Warna gradient
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                )),
           ),
         ],
       ),
     );
   }
 
-  Widget _getMap() {
-    return GoogleMap(
-      myLocationEnabled: true,
-      myLocationButtonEnabled: false,
-      initialCameraPosition:
-          _cameraPosition!, //initialize camera position for map
-      mapType: MapType.normal,
-      onMapCreated: (GoogleMapController controller) {
-        //this function will trigger when map is fully loaded
-        if (!_googleMapController.isCompleted) {
-          //set controller to google map when it is fully loaded
-          _googleMapController.complete(controller);
-        }
-      },
-    );
-  }
-
-  Widget _getCustomPin() {
-    return Center(
-      child: SizedBox(
-        width: 50,
-        child: Lottie.asset("assets/js/my_location.json"),
-      ),
-    );
-  }
-
-  //get address from dragged pin
-  Future _getAddress(LatLng position) async {
-    //this will list down all address around the position
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark address = placemarks[0]; // get only first and closest address
-    String addresStr =
-        "${address.street}, ${address.subLocality}, ${address.subAdministrativeArea}, ${address.administrativeArea}, ${address.country}";
-    setState(() {
-      _lokasiController.draggedAddress = addresStr;
-    });
-  }
-
-  Future _getLatlong(LatLng position) async {
-    stringLatLng = LatLng(position.latitude, position.longitude).toString();
-    final match = RegExp(r'LatLng\(([^)]+)\)').firstMatch(stringLatLng);
-
-    if (match != null) {
-      final latLngString = match.group(1);
-      setState(() {
-        _lokasiController.latlong = '$latLngString';
-      });
-    }
-  }
-
-  //get user's current location and set the map's camera to that location
-  Future _gotoUserCurrentPosition() async {
-    Position currentPosition = await _determineUserCurrentPosition();
-    _gotoSpecificPosition(
-        LatLng(currentPosition.latitude, currentPosition.longitude));
-  }
-
-  //go to specific position by latlng
-  Future _gotoSpecificPosition(LatLng position) async {
-    GoogleMapController mapController = await _googleMapController.future;
-    mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: position, zoom: 17.5)));
-    //every time that we dragged pin , it will list down the address here
-    await _getAddress(position);
-    await _getLatlong(position);
-  }
-
-  Future _determineUserCurrentPosition() async {
+  Future _GetUserCurrentPosition() async {
     LocationPermission locationPermission;
     bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+
     //check if user enable service for location permission
     if (!isLocationServiceEnabled) {
-      print("user don't enable location permission");
+      await Geolocator.openLocationSettings();
+      return Future.error("user don't enable location permission");
     }
 
     locationPermission = await Geolocator.checkPermission();
@@ -322,16 +332,30 @@ class _HomePageState extends State<UpdateLokasi> {
     if (locationPermission == LocationPermission.denied) {
       locationPermission = await Geolocator.requestPermission();
       if (locationPermission == LocationPermission.denied) {
-        print("user denied location permission");
+        return Future.error("user denied location permission");
       }
     }
 
     //check if user denied permission forever
     if (locationPermission == LocationPermission.deniedForever) {
-      print("user denied permission forever");
+      return Future.error("user denied permission forever");
     }
 
     return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+        desiredAccuracy: LocationAccuracy.high);
+  }
+
+  //get address from dragged pin
+  Future _getAddress(Position position) async {
+    //this will list down all address around the position
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    Placemark address = placemarks[0]; // get only first and closest address
+    String addresStr =
+        "${address.street}, ${address.subLocality}, ${address.subAdministrativeArea}, ${address.administrativeArea}, ${address.country}";
+    setState(() {
+      alamat = addresStr;
+    });
   }
 }

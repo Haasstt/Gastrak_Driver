@@ -69,9 +69,7 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
                     children: DataDetailPesanan.map((index) {
                       return Column(
                         children: [
-                          InkWell(
-                            onTap: () {},
-                            child: SizedBox(
+                           SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: Column(
                                 mainAxisAlignment:
@@ -246,7 +244,7 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
                                 ],
                               ),
                             ),
-                          ),
+                          
                           const Divider(), // Garis pemisah antara setiap entri
                         ],
                       );
