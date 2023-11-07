@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:sp_util/sp_util.dart';
 
 class BaseProvider extends GetConnect {
-  var host = "192.168.1.21:8000";
+  var host = "192.168.1.12:8000";
   var Url = "";
   var Urlupdatedatauser = "";
   var header = {

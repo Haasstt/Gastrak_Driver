@@ -99,7 +99,7 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
             DataDetailPesanan.add(element);
           });
         }
-        print(DataDetailPesanan);
+        // print(DataDetailPesanan);
       }
     });
     super.initState();
@@ -109,176 +109,206 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.70,
-            child: Center(
-              child: Text(
-                'Detail Pesanan Agen ${(nama_agen)}',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
+          title: Text(
+            'Detail Pesanan Agen ${(nama_agen)}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: 'Poppins',
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color.fromRGBO(249, 1, 131, 1.0),
+                  Color.fromRGBO(128, 38, 198, 1.0)
+                ], // Warna gradient
               ),
             ),
           ),
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           elevation: 0,
-          iconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
         ),
-        body: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: DataDetailPesanan.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : Column(
-                    children: DataDetailPesanan.map((index) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+        body: Stack(children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: DataDetailPesanan.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: DataDetailPesanan.map((index) {
+                            return Column(
                               children: [
-                                FadeAnimation(
-                                  0.9,
-                                  Row(
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                      FadeAnimation(
+                                        0.5,
+                                        Row(
                                           children: [
                                             Container(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                              child: Row(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
-                                                  const Text(
-                                                    "Resi ",
-                                                    style: TextStyle(
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 10),
+                                                    child: Row(
+                                                      children: [
+                                                        const Text(
+                                                          "Resi ",
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "${index['resi_pengiriman']}",
+                                                          style: const TextStyle(
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              color: Colors
+                                                                  .black26),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Nama Produk ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${index['name_gas']} ${index['berat_gas']} Kg ${index['jenis_gas']}",
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Jumlah Pesanan ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${index['jumlah_transaksi']}",
+                                                        style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Tanggal Pemesanan ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "${index['tanggal_transaksi']}",
+                                                        style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Total Pembayaran ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Rp${index['total_transaksi']}",
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text(
+                                                    "${index['status_pengiriman']}",
+                                                    style: const TextStyle(
                                                       fontSize: 14,
                                                       fontFamily: 'Poppins',
                                                       fontWeight:
-                                                          FontWeight.normal,
+                                                          FontWeight.bold,
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    "${index['resi_pengiriman']}",
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        color: Colors.black26),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            Row(
-                                              children: [
-                                                const Text(
-                                                  "Nama Produk ",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${index['name_gas']} ${index['berat_gas']} Kg ${index['jenis_gas']}",
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Text(
-                                                  "Jumlah Pesanan ",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${index['jumlah_transaksi']}",
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Text(
-                                                  "Tanggal Pemesanan ",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${index['tanggal_transaksi']}",
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Text(
-                                                  "Total Pembayaran ",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Rp${index['total_transaksi']}",
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              "${index['status_pengiriman']}",
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Poppins',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      FadeAnimation(
+                                        0.5,
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
                                             Container(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10),
+                                              padding: const EdgeInsets.symmetric(vertical: 10),
                                               child: ElevatedButton(
                                                 style: TextButton.styleFrom(
                                                   backgroundColor:
@@ -286,16 +316,13 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
                                                           249, 1, 131, 1.0),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                                        BorderRadius.circular(5),
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  FocusManager
-                                                      .instance.primaryFocus
+                                                  FocusManager.instance.primaryFocus
                                                       ?.unfocus();
-                                                  _showConfirmationDialog(
-                                                      context,
+                                                  _showConfirmationDialog(context,
                                                       index['id_transaksi']);
                                                 },
                                                 child: const Text(
@@ -314,14 +341,29 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
 
-                          const Divider(), // Garis pemisah antara setiap entri
-                        ],
-                      );
-                    }).toList(),
-                  )));
+                                const Divider(), // Garis pemisah antara setiap entri
+                              ],
+                            );
+                          }).toList(),
+                        ))),
+          Container(
+            width: double.infinity,
+            height: 20,
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color.fromRGBO(249, 1, 131, 1.0),
+                    Color.fromRGBO(128, 38, 198, 1.0)
+                  ], // Warna gradient
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                )),
+          ),
+        ]));
   }
 }

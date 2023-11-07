@@ -310,7 +310,7 @@ class _HomePageState extends State<UpdateLokasi> {
                                     }).toList(),
                                     onChanged: (newValue) {
                                       setState(() {
-                                        _lokasiController.tujuan = newValue;
+                                        _lokasiController.id_tujuan = newValue;
                                       });
                                     },
                                   )

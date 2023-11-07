@@ -125,7 +125,7 @@ class _MyHomePageState extends State<Homepage> {
                                       SizedBox(
                                         width: 200,
                                         child: Text(
-                                          'Lorem ipsum dolor sit amet, consec vtetur adipiscing elit, dddd',
+                                          'Menjadi pengemudi yang aman dan terpercaya',
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontFamily: 'Poppins',

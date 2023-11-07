@@ -117,7 +117,7 @@ class _HomePageState extends State<Maps> {
                           onTap: () {
                             // Salin alamat ketika teks diketuk
                             Clipboard.setData(ClipboardData(
-                                text: _lokasiController.draggedAddress));
+                                text: _lokasiController.alamat));
                             // Tampilkan pesan atau umpan balik lainnya
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -131,7 +131,7 @@ class _HomePageState extends State<Maps> {
                             child: SizedBox(
                               width: double.infinity,
                               child: Text(
-                                _lokasiController.draggedAddress,
+                                _lokasiController.alamat,
                                 style: const TextStyle(
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
@@ -293,7 +293,7 @@ class _HomePageState extends State<Maps> {
     String addresStr =
         "${address.street}, ${address.subLocality}, ${address.subAdministrativeArea}, ${address.administrativeArea}, ${address.country}";
     setState(() {
-      _lokasiController.draggedAddress = addresStr;
+      _lokasiController.alamat = addresStr;
     });
   }
 
