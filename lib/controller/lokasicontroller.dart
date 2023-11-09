@@ -3,16 +3,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logastics/provider/TransaksiProvider.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sp_util/sp_util.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LokasiController extends GetxController {
+  var id = SpUtil.getInt('id')!;
   String? id_tujuan;
   late String alamat = "";
   late String latlong = "";
   TextEditingController txtKeterangan = TextEditingController();
-  List<String> id_dipilih = [];
+  List<int> id_dipilih = [];
+  List<int> id_listtransaksi = [];
 
   void Addlocation() {
+    EasyLoading.dismiss();
     String keterangan = txtKeterangan.text;
     if (alamat.isEmpty || latlong.isEmpty) {
       Get.snackbar(
@@ -36,25 +40,66 @@ class LokasiController extends GetxController {
         colorText: Colors.white,
       );
     } else {
+      EasyLoading.show();
       TransaksiProvider().getDataDetailpesanan(id_tujuan).then((value) {
-      if (value.statusCode == 200) {
-        var data = value.body['datauser'];
-        // print(value.body);
-        for (var element in data) { 
+        if (value.statusCode == 200) {
+          var data = value.body['datauser'];
+          for (var element in data) {
             id_dipilih.add(element['id_transaksi']);
+          }
+          TransaksiProvider().getDataByIdKurir(id).then((value) {
+            if (value.statusCode == 200) {
+              var data = value.body['datauser'];
+              for (var element in data) {
+                var id_transaksi = element['id_transaksi'];
+                if (!id_dipilih.contains(id_transaksi)) {
+                  id_listtransaksi.add(id_transaksi);
+                }
+              }
+              var data_tujuan = {
+                "id_transaksi": id_dipilih,
+                "alamat_lokasi_tujuan": alamat,
+                "koordinat_lokasi": latlong,
+                "keterangan": "Kurir sedang menuju ke lokasi Anda"
+              };
+              TransaksiProvider().updateLokasi(data_tujuan).then((value) {
+                if (value.statusCode == 200) {
+                  print(id_listtransaksi);
+                  if(id_listtransaksi.isNotEmpty){
+                  var data = {
+                    "id_transaksi": id_listtransaksi,
+                    "alamat_lokasi_tujuan": alamat,
+                    "koordinat_lokasi": latlong,    
+                    "keterangan": keterangan
+                  };
+                  TransaksiProvider().updateLokasi(data).then((value) {
+                    if (value.statusCode == 200) {
+                      Get.snackbar(
+                        "Successs",
+                        "Berhasil memperbarui lokasi ${(id_tujuan)}",
+                        backgroundColor: Colors.green.withOpacity(0.85),
+                        colorText: Colors.white,
+                      );
+                      Get.offAllNamed('/home');
+                      EasyLoading.dismiss();
+                    }
+                  });
+                  }else{
+                      Get.snackbar(
+                        "Successs",
+                        "Berhasil memperbarui lokasi ${(id_tujuan)}",
+                        backgroundColor: Colors.green.withOpacity(0.85),
+                        colorText: Colors.white,
+                      );
+                      Get.offAllNamed('/home');
+                      EasyLoading.dismiss();
+                  }
+                }
+              });
+            }
+          });
         }
-      print(alamat);
-      print(latlong);
-      print(keterangan);
-      Get.snackbar(
-        "Successs",
-        "Berhasil memperbarui lokasi ${(id_tujuan)}",
-        backgroundColor: Colors.green.withOpacity(0.85),
-        colorText: Colors.white,
-      );
-        // print(DataDetailPesanan);
-      }
-    });
+      });
     }
   }
 }

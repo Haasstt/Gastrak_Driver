@@ -8,10 +8,17 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sp_util/sp_util.dart';
 
 class DetailPesanan extends StatefulWidget {
-  const DetailPesanan({super.key, required this.id, required this.agen});
+  const DetailPesanan(
+      {super.key,
+      required this.id,
+      required this.agen,
+      required this.latlong,
+      required this.alamat});
 
   final int id;
   final String agen;
+  final String latlong;
+  final String alamat;
 
   @override
   State<DetailPesanan> createState() => _MyStatefulWidgetState();
@@ -20,6 +27,8 @@ class DetailPesanan extends StatefulWidget {
 class _MyStatefulWidgetState extends State<DetailPesanan> {
   late var id = widget.id.toInt();
   late var nama_agen = widget.agen;
+  late var alamat_agen = widget.alamat;
+  late var latlong_agen = widget.latlong;
   List<Map<String, dynamic>> DataDetailPesanan = [];
 
   Future<void> _showConfirmationDialog(
@@ -60,31 +69,44 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
       "token": 'Bearer ${SpUtil.getString('token')!}',
     };
 
-    TransaksiProvider().updatePesananSelesai(id_transaksi, data).then((value) {
-      var pesan = value.body['message'];
+    var data_tujuan = {
+      "id_transaksi": [id_transaksi],
+      "alamat_lokasi_tujuan": alamat_agen,
+      "koordinat_lokasi": latlong_agen,
+      "keterangan": "Pesanan sudah diterima" 
+    };
+    
+    TransaksiProvider().updateLokasi(data_tujuan).then((value) {
       if (value.statusCode == 200) {
-        Get.snackbar(
-          "Successs",
-          pesan,
-          backgroundColor: Colors.green.withOpacity(0.85),
-          colorText: Colors.white,
-        );
-        Get.offAllNamed('/home');
-      } else if (value.statusCode == 422) {
-        Get.snackbar(
-          "Failed",
-          pesan,
-          backgroundColor: Colors.red.withOpacity(0.50),
-          colorText: Colors.white,
-        );
-      } else if (value.hasError == true) {
-        Get.snackbar(
-          "Server Not Responding",
-          'Gagal menghubungka ke server',
-          colorText: Colors.white,
-        );
+        TransaksiProvider()
+            .updatePesananSelesai(id_transaksi, data)
+            .then((value) {
+          var pesan = value.body['message'];
+          if (value.statusCode == 200) {
+            Get.snackbar(
+              "Successs",
+              pesan,
+              backgroundColor: Colors.green.withOpacity(0.85),
+              colorText: Colors.white,
+            );
+            Get.offAllNamed('/home');
+          } else if (value.statusCode == 422) {
+            Get.snackbar(
+              "Failed",
+              pesan,
+              backgroundColor: Colors.red.withOpacity(0.50),
+              colorText: Colors.white,
+            );
+          } else if (value.hasError == true) {
+            Get.snackbar(
+              "Server Not Responding",
+              'Gagal menghubungka ke server',
+              colorText: Colors.white,
+            );
+          }
+          EasyLoading.dismiss();
+        });
       }
-      EasyLoading.dismiss();
     });
   }
 
@@ -93,7 +115,7 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
     TransaksiProvider().getDataDetailpesanan(id).then((value) {
       if (value.statusCode == 200) {
         var data = value.body['datauser'];
-        // print(value.body);
+        print(value.body);
         for (var element in data) {
           setState(() {
             DataDetailPesanan.add(element);
@@ -305,10 +327,13 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
                                       FadeAnimation(
                                         0.5,
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              padding: const EdgeInsets.symmetric(vertical: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
                                               child: ElevatedButton(
                                                 style: TextButton.styleFrom(
                                                   backgroundColor:
@@ -316,13 +341,16 @@ class _MyStatefulWidgetState extends State<DetailPesanan> {
                                                           249, 1, 131, 1.0),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(5),
+                                                        BorderRadius.circular(
+                                                            5),
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  FocusManager.instance.primaryFocus
+                                                  FocusManager
+                                                      .instance.primaryFocus
                                                       ?.unfocus();
-                                                  _showConfirmationDialog(context,
+                                                  _showConfirmationDialog(
+                                                      context,
                                                       index['id_transaksi']);
                                                 },
                                                 child: const Text(

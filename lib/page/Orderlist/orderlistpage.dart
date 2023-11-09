@@ -41,6 +41,7 @@ class _MyHomePageState extends State<OrderlistPage> {
               Agents.add(element);
             });
           }
+          print(Agents);
         }
         // print(data);
       } else if (value.hasError == true) {
@@ -223,6 +224,12 @@ class _MyHomePageState extends State<OrderlistPage> {
                                                                 ['id_agen'],
                                                             agen: Agents[index]
                                                                 ['name'],
+                                                            latlong: Agents[
+                                                                    index]
+                                                                ['koordinat'],
+                                                            alamat:
+                                                                Agents[index]
+                                                                    ['alamat'],
                                                           ),
                                                           type:
                                                               PageTransitionType
