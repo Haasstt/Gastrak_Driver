@@ -64,35 +64,34 @@ class LokasiController extends GetxController {
               };
               TransaksiProvider().updateLokasi(data_tujuan).then((value) {
                 if (value.statusCode == 200) {
-                  print(id_listtransaksi);
-                  if(id_listtransaksi.isNotEmpty){
-                  var data = {
-                    "id_transaksi": id_listtransaksi,
-                    "alamat_lokasi_tujuan": alamat,
-                    "koordinat_lokasi": latlong,    
-                    "keterangan": keterangan
-                  };
-                  TransaksiProvider().updateLokasi(data).then((value) {
-                    if (value.statusCode == 200) {
-                      Get.snackbar(
-                        "Successs",
-                        "Berhasil memperbarui lokasi ${(id_tujuan)}",
-                        backgroundColor: Colors.green.withOpacity(0.85),
-                        colorText: Colors.white,
-                      );
-                      Get.offAllNamed('/home');
-                      EasyLoading.dismiss();
-                    }
-                  });
-                  }else{
-                      Get.snackbar(
-                        "Successs",
-                        "Berhasil memperbarui lokasi ${(id_tujuan)}",
-                        backgroundColor: Colors.green.withOpacity(0.85),
-                        colorText: Colors.white,
-                      );
-                      Get.offAllNamed('/home');
-                      EasyLoading.dismiss();
+                  if (id_listtransaksi.isNotEmpty) {
+                    var data = {
+                      "id_transaksi": id_listtransaksi,
+                      "alamat_lokasi_tujuan": alamat,
+                      "koordinat_lokasi": latlong,
+                      "keterangan": keterangan
+                    };
+                    TransaksiProvider().updateLokasi(data).then((value) {
+                      if (value.statusCode == 200) {
+                        Get.snackbar(
+                          "Successs",
+                          "Berhasil memperbarui lokasi ${(id_tujuan)}",
+                          backgroundColor: Colors.green.withOpacity(0.85),
+                          colorText: Colors.white,
+                        );
+                        Get.offAllNamed('/home');
+                        EasyLoading.dismiss();
+                      }
+                    });
+                  } else {
+                    Get.snackbar(
+                      "Successs",
+                      "Berhasil memperbarui lokasi ${(id_tujuan)}",
+                      backgroundColor: Colors.green.withOpacity(0.85),
+                      colorText: Colors.white,
+                    );
+                    Get.offAllNamed('/home');
+                    EasyLoading.dismiss();
                   }
                 }
               });
