@@ -42,14 +42,16 @@ class LokasiController extends GetxController {
     } else {
       EasyLoading.show();
       TransaksiProvider().getDataDetailpesanan(id_tujuan).then((value) {
+        print(value.statusCode);
         if (value.statusCode == 200) {
           var data = value.body['datauser'];
           for (var element in data) {
             id_dipilih.add(element['id_transaksi']);
           }
           TransaksiProvider().getDataByIdKurir(id).then((value) {
+            print(value.statusCode);
             if (value.statusCode == 200) {
-              var data = value.body['datauser'];
+              var data = value.body['data'];
               for (var element in data) {
                 var id_transaksi = element['id_transaksi'];
                 if (!id_dipilih.contains(id_transaksi)) {
@@ -63,6 +65,7 @@ class LokasiController extends GetxController {
                 "keterangan": "Kurir sedang menuju ke lokasi Anda"
               };
               TransaksiProvider().updateLokasi(data_tujuan).then((value) {
+                print(value.statusCode);
                 if (value.statusCode == 200) {
                   if (id_listtransaksi.isNotEmpty) {
                     var data = {
@@ -72,6 +75,7 @@ class LokasiController extends GetxController {
                       "keterangan": keterangan
                     };
                     TransaksiProvider().updateLokasi(data).then((value) {
+                      print(value.statusCode);
                       if (value.statusCode == 200) {
                         Get.snackbar(
                           "Successs",
@@ -100,5 +104,6 @@ class LokasiController extends GetxController {
         }
       });
     }
+    EasyLoading.dismiss();
   }
 }
